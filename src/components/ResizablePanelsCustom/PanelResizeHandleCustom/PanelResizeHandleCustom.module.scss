@@ -1,0 +1,12 @@
+.resizeHandle {
+  min-width: 100%;
+  min-height: 4px;
+  transform: translateY(-50%);
+
+  &.isVertical {
+    min-width: 4px;
+    min-height: 100%;
+    transform: translateX(-50%);
+  }
+}
+
