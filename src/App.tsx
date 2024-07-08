@@ -7,9 +7,12 @@ function App() {
   const handleMinimize = () => {
     setWidth(80);
   }
+  const handleMaximize = () => {
+    setWidth(300);
+  }
   return (
     <div className="App h-[100vh] p-2 flex">
-      <Navigation width={width} handleMinimize={handleMinimize} isOpen={isOpen}></Navigation>
+      <Navigation width={width} handleMinimize={handleMinimize} isOpen={isOpen} handleMaximize={handleMaximize}></Navigation>
     </div>
   );
 }

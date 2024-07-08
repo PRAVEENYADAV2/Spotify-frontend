@@ -1,12 +1,26 @@
+import { useState } from "react";
+import "remixicon/fonts/remixicon.css";
+enum NavLibraryItems {
+  None,
+  Playlists,
+  PodcastsAndShows,
+}
 export default function Navigation({
   width,
   handleMinimize,
+  handleMaximize,
   isOpen,
 }: {
   width: number;
   handleMinimize: () => void;
+  handleMaximize: () => void;
   isOpen: boolean;
 }) {
+  const [selected, setSelected] = useState(NavLibraryItems.None);
+  const handleClickLibrary = () => {
+    if (isOpen) handleMinimize();
+    if (!isOpen) handleMaximize();
+  };
   return (
     <div
       className={`nav    flex flex-col gap-2`}
@@ -16,24 +30,23 @@ export default function Navigation({
         {isOpen && <Logo></Logo>}
         <NavList isOpen={isOpen}></NavList>
       </div>
-      <div className="bg-[#121212] rounded-lg h-full p-5 pl-6">
+      <div className="bg-[#121212] rounded-lg h-full p-5 pt-3 pl-6">
         <div>
           <header className="flex items-center justify-between">
             <div className="flex gap-3">
-              <button>
-
-              <span>
-                <svg
-                  data-encore-id="icon"
-                  role="img"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="w-6 h-6 hover:fill-white"
-                  fill="#a7a7a7"
-                >
-                  <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path>
-                </svg>
-              </span>
+              <button onClick={handleClickLibrary}>
+                <span>
+                  <svg
+                    data-encore-id="icon"
+                    role="img"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6 hover:fill-white"
+                    fill="#a7a7a7"
+                  >
+                    <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path>
+                  </svg>
+                </span>
               </button>
               {isOpen && (
                 <span className="font-bold text-[#a7a7a7]">Your Library</span>
@@ -75,9 +88,15 @@ export default function Navigation({
               </div>
             )}
           </header>
-          <div></div>
+
+          {isOpen && (
+            <NavLibrary
+              selected={selected}
+              setSelected={setSelected}
+            ></NavLibrary>
+          )}
         </div>
-        <div></div>
+        <ItemBox isOpen={isOpen}></ItemBox>
       </div>
     </div>
   );
@@ -146,4 +165,88 @@ function NavList({ isOpen }: { isOpen: boolean }) {
   );
 }
 
+function NavLibrary({
+  selected,
+  setSelected,
+}: {
+  selected: NavLibraryItems;
+  setSelected: (selected: NavLibraryItems) => void;
+}) {
+  const isOpenPlaylists =
+    selected === NavLibraryItems.Playlists || selected === NavLibraryItems.None;
+  const isOpenPodcastsAndShows =
+    selected === NavLibraryItems.PodcastsAndShows ||
+    selected === NavLibraryItems.None;
+  const handleClickLibrary = (selected: NavLibraryItems) => {
+    if (selected === NavLibraryItems.None) setSelected(NavLibraryItems.None);
+    if (selected === NavLibraryItems.Playlists)
+      setSelected(NavLibraryItems.Playlists);
+    if (selected === NavLibraryItems.PodcastsAndShows)
+      setSelected(NavLibraryItems.PodcastsAndShows);
+  };
+  return (
+    <div className="mt-3">
+      <div className="flex items-center gap-2 font-medium">
+        {selected !== NavLibraryItems.None && (
+          <button
+            className="rounded-full bg-[#232323] h-8 w-8 font-semibold text-xl flex items-start justify-center"
+            onClick={() => setSelected(NavLibraryItems.None)}
+          >
+            &times;
+          </button>
+        )}
+        {/* show the buttons if it is selected or if it is not selected */}
+        {isOpenPlaylists && (
+          <button
+            className={`px-4 py-1  rounded-full ${
+              selected === NavLibraryItems.Playlists
+                ? "bg-white text-black"
+                : "bg-[#232323]"
+            }`}
+            onClick={() => handleClickLibrary(NavLibraryItems.Playlists)}
+          >
+            <div>
+              <span>Playlists</span>
+            </div>
+          </button>
+        )}
+        {isOpenPodcastsAndShows && (
+          <button
+            className={`px-4 py-1  rounded-full ${
+              selected === NavLibraryItems.PodcastsAndShows
+                ? "bg-white text-black"
+                : "bg-[#232323]"
+            }`}
+            onClick={() => handleClickLibrary(NavLibraryItems.PodcastsAndShows)}
+          >
+            <div>
+              <span>Podcasts & Shows</span>
+            </div>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
+function ItemBox({isOpen}: {isOpen: boolean}) {
+  return (
+    <div className="mt-2">
+      {
+        isOpen && 
+      <div className="flex items-center justify-between">
+        <button className="hover:bg-[#232323] h-8 w-8 flex items-center justify-center rounded-full text-[#727272] font-bold hover:text-white">
+          <i className="ri-search-line"></i>
+        </button>
+        <button className="flex items-center gap-2 hover:scale-105 text-[#727272] font-bold hover:text-white">
+          <span>
+            Recents
+          </span>
+          <i className="ri-list-check "></i>
+        </button>
+      </div>
+      }
+      <div></div>
+    </div>
+  );
+}
