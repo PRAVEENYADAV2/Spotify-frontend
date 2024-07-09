@@ -4,7 +4,7 @@ export default function DetailsSong() {
 }
 function MainBox() {
   return (
-    <div className="w-[350px] bg-zinc-800 h-full rounded-md">
+    <div className="w-[350px] bg-[#121212]  rounded-md" style={{ height: "calc(100vh - 8px)"}}>
       <Nav />
     </div>
   );
@@ -12,7 +12,7 @@ function MainBox() {
 function Nav() {
   const title = "Sweater waterlkzdygkdngriugyidkgreyieru".slice(0, 13) + "...";
   return (
-    <div className="h-[70px] px-[16px] rounded-md bg-zinc-900 flex items-center">
+    <div className="h-[70px] px-[16px] rounded-lg  flex items-center">
       <div className="flex justify-between w-full">
         <div className="">
           <a
